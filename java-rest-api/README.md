@@ -1,91 +1,51 @@
-# Java REST API
+# QA Completo - API REST Spring Boot
 
-Este projeto é uma API REST simples em Java, desenvolvida com Spring Boot. Ele disponibiliza endpoints para gerenciar itens e oferece suporte a respostas nos formatos JSON e XML.
+## Descrição
+Este projeto é uma **API REST** desenvolvida com **Spring Boot** para gerenciar itens, suportando **respostas em JSON e XML**. Ele inclui testes unitários que cobrem **regras de negócio**, casos de sucesso e exceções.
 
-## Estrutura do Projeto
+---
 
-```
-java-rest-api
-├── pom.xml
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── example
-│   │   │           └── demo
-│   │   │               ├── DemoApplication.java
-│   │   │               ├── controller
-│   │   │               │   └── ApiController.java
-│   │   │               └── model
-│   │   │                   └── Item.java
-│   │   └── resources
-│   │       └── application.properties
-│   └── test
-│       └── java
-│           └── com
-│               └── example
-│                   └── demo
-│                       └── ApiControllerTest.java
-└── README.md
-```
+## Funcionalidades / Endpoints
 
-## Instruções de Configuração
+- **GET /api/items** → Lista todos os itens
+- **POST /api/items** → Cria um novo item
+- **GET /api/items/{id}** → Busca item por ID
+- **GET /api/items/name/{name}** → Busca item por nome
+- **GET /api/items/count** → Retorna a quantidade total de itens
 
-1. **Clonar o repositório::**
-   ```
-   git clone <repository-url>
-   cd java-rest-api
-   ```
+---
 
-2. **Compilar o projeto:**
-   Certifique-se de que o Maven esteja instalado e, em seguida, execute:
-   ```
-   mvn clean install
-   ```
+## Regras de Negócio / Validações
 
-3. **Executar a aplicação:**
-   Você pode iniciar a aplicação utilizando:
-   ```
-   mvn spring-boot:run
-   ```
+- Não é permitido criar item com **nome vazio** ou **descrição vazia**
+- Caso o item não seja encontrado, uma **exceção é lançada**
+- IDs dos itens são gerados automaticamente para garantir **unicidade**
 
-4. **Acessar a API:**
-   A API estará disponível em `http://localhost:8080/api/items`.
+---
 
-## Exemplos de Uso
+## Testes Unitários
 
-- **Obter todos os itens:**
-  ```
-  GET /api/items
-  ```
+- Teste criação de item válido
+- Teste busca por ID e nome
+- Teste contagem de itens
+- Teste criação de item inválido (nome/descrição vazia)
+- Teste item não encontrado
 
-- **Obter um item por ID:**
-  ```
-  GET /api/items/{id}
-  ```
+> Todos os testes são implementados usando **JUnit 5** e **MockMvc**.
 
-- **Criar um novo item:**
-  ```
-  POST /api/items
-  Content-Type: application/json
+---
 
-  {
-      "name": "Item Name",
-      "description": "Item Description"
-  }
-  ```
+## Tecnologias
 
-## Testes
+- Java 17
+- Spring Boot
+- Maven
+- JUnit 5
 
-Testes unitários estão incluídos no projeto para validar a funcionalidade da API. Você pode executá-los utilizando:
-```
-mvn test
-```
+---
 
-Isso executará os testes definidos em `ApiControllerTest.java`, os quais verificam as respostas corretas em JSON e XML, além de validar os códigos de status HTTP.
+## Como Rodar o Projeto
 
-## Documentação completa dos testes unitários
-
-Focar em testes é o que diferencia um código que "funciona agora" de um código robusto e confiável a longo prazo. É uma das habilidades mais importantes para um desenvolvedor.
-
-
+### Pelo Maven:
+```bash
+mvn spring-boot:run

@@ -70,4 +70,37 @@ public class ApiControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+    // NOVO TESTE 1 - buscar por nome
+    @Test
+    public void testGetItemByName() throws Exception {
+        mockMvc.perform(get("/api/items/name/Item 1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    // NOVO TESTE 2 - erro ao buscar nome
+    @Test
+    public void testGetItemByNameNotFound() throws Exception {
+        mockMvc.perform(get("/api/items/name/XXX")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    // NOVO TESTE 3 - contar itens
+    @Test
+    public void testCountItems() throws Exception {
+        mockMvc.perform(get("/api/items/count"))
+                .andExpect(status().isOk());
+    }
+
+    // NOVO TESTE 4 - erro regra de negócio
+    @Test
+    public void testCreateItemInvalid() throws Exception {
+        Item item = new Item(null, "", "");
+
+        mockMvc.perform(post("/api/items")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(item)))
+                .andExpect(status().isBadRequest());
+    }
 }

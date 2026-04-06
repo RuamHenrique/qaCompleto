@@ -22,12 +22,21 @@ public class ApiController {
         return ResponseEntity.ok(items);
     }
 
+    // ✅ AJUSTADO COM VALIDAÇÃO (REGRA DE NEGÓCIO)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        // Atribui um novo ID para garantir que seja único
+
+        if (item.getName() == null || item.getName().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (item.getDescription() == null || item.getDescription().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         item.setId(counter.incrementAndGet());
         items.add(item);
-        // Retorna o status 201 Created, que é a prática correta
+
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
@@ -38,5 +47,21 @@ public class ApiController {
                 .findFirst()
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ✅ CORRIGIDO (endpoint certo)
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Item> getItemByName(@PathVariable String name) {
+        return items.stream()
+                .filter(item -> item.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ✅ CORRIGIDO (endpoint certo)
+    @GetMapping("/count")
+    public int countItems() {
+        return items.size();
     }
 }
